@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+#spotifyNavBarBlock {
+  background-color: #000;
+  color: #fff;
+  height: 85px;
+  width: 100%;
+  position: fixed;
+  display: block;
+  top: 0px;
+}
+#spotifyNavBarBlock article {
+  width: 60%;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  height: 85px;
+}
+#spotifyNavBarBlock article div {
+  flex-basis: 50%;
+}
+.logoBlock svg {
+  fill: #fff;
+  width: 150px;
+}
+.menuBlock ul {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  list-style: none;
+}
+.menuBlock ul li a {
+  color: #fff;
+  padding: 20px 21px;
+  font-weight: bold;
+  text-decoration: none;
+}
+.menuBlock ul li a:hover {
+  color: #1ed760;
+  font-weight: bold;
+}
