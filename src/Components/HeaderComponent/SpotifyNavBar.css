@@ -8,9 +8,9 @@
   color: #fff;
   height: 85px;
   width: 100%;
-  position: fixed;
+  /* position: fixed;
   display: block;
-  top: 0px;
+  top: 0px; */
 }
 #spotifyNavBarBlock article {
   width: 60%;

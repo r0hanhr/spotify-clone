@@ -1,6 +1,10 @@
 import React, { Component, Fragment } from "react";
 import "./Auth.css";
-class Signup extends Component {
+import firebase from "../../firebase";
+import { toast } from "react-toastify";
+import md5 from "md5";
+
+class SignupComponent extends Component {
     state = {
         email: "",
         confirmEmail: "",
@@ -12,16 +16,37 @@ class Signup extends Component {
     handleChange = e => {
         this.setState({ [e.target.name]: e.target.value });
     };
-    handleSubmit = e => {
+    handleSubmit = async e => {
         e.preventDefault();
-        let { email, confirmEmail, password, profile, dob, gender } = this.state;
-        console.log(email, confirmEmail, password, profile, dob, gender);
+        try {
+            let { email, confirmEmail, password, profile, dob, gender } = this.state;
+            console.log([email, confirmEmail, password, profile, dob, gender]);
+            // authentication
+            let userData = await firebase.auth().createUserWithEmailAndPassword(email, password);
+            userData.user.sendEmailVerification();
+            let message = `Verification mail has been sent to ${email} please confirm it and login`;
+            toast.success(message);
+            //gravatar
+            userData.user.updateProfile({
+                displayName: profile,
+                photoURL: `https://www.gravatar.com/avatar/${md5(email)}?d=identicon`
+            })
+            //store information to realtime database
+            await firebase.database().ref("/users" + userData.user.uid).set({
+                email: userData.email,
+                photoURL: userData.photoURL,
+                profile: userData.profile
+            })
+        } catch (err) {
+            console.log(err);
+            toast.error(err.message);
+        }
     }
     render() {
         let { email, confirmEmail, password, profile, dob, gender } = this.state;
         return (
             <Fragment>
-                <section id="authSection" className="col-md-4 mx-auto my-2 card">
+                <section id="authSection" className="col-md-4 mx-auto card">
                     <article>
                         <h2>Sign up with your email address</h2>
                         <form autoComplete="off" onSubmit={this.handleSubmit}>
@@ -29,7 +54,7 @@ class Signup extends Component {
                             <div className="form-group">
                                 <label>What's your email?</label>
                                 <input
-                                    type="text"
+                                    type="email"
                                     className="form-control"
                                     placeholder="Enter your email"
                                     name="email"
@@ -42,7 +67,7 @@ class Signup extends Component {
                             <div className="form-group">
                                 <label>Confirm your email</label>
                                 <input
-                                    type="text"
+                                    type="email"
                                     className="form-control"
                                     placeholder="Enter your email again"
                                     name="confirmEmail"
@@ -55,7 +80,7 @@ class Signup extends Component {
                             <div className="form-group">
                                 <label>Create a password</label>
                                 <input
-                                    type="text"
+                                    type="password"
                                     className="form-control"
                                     placeholder="Create a password."
                                     name="password"
@@ -90,19 +115,19 @@ class Signup extends Component {
                             </div>
 
                             {/* gender */}
-                            <div className="form-group">
+                            <div className="form-group" name="gender" value={gender}>
                                 <label>What's your gender?</label>
                                 <input
                                     type="radio"
                                     name="gender"
-                                    value={gender}
+                                    value="male"
                                     onChange={this.handleChange}
                                 />
                 Male
                 <input
                                     type="radio"
                                     name="gender"
-                                    value={gender}
+                                    value="female"
                                     onChange={this.handleChange}
                                 />
                 Female
@@ -137,4 +162,4 @@ class Signup extends Component {
     }
 }
 
-export default Signup;
+export default SignupComponent;

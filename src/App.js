@@ -1,25 +1,32 @@
 import React, { Component, Fragment } from "react";
-import Signup from "./Components/AuthComponent/Signup";
-import FooterComponent from "./Components/FooterComponent/FooterComponent";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import SpotifyNavBar from "./Components/HeaderComponent/SpotifyNavBar";
-import SpotifySlider from "./Components/SliderComponent/SpotifySlider";
+import HomeComponent from "./Components/HomeComponent/HomeComponent";
+import SignupComponent from "./Components/AuthComponent/SignupComponent";
+import LoginComponent from "./Components/AuthComponent/LoginComponent";
+import PageNotFound from "./Components/PageNoteFoundComponent/PageNotFound";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 class App extends Component {
   state = {};
   render() {
     return (
       <Fragment>
-        <header>
-          <SpotifyNavBar />
-        </header>
-        <main>
-          <SpotifySlider />
-        </main>
-        <footer>
-          <FooterComponent />
-        </footer>
-        <main>
-          <Signup />
-        </main>
+        <Router>
+          <header>
+            <SpotifyNavBar />
+          </header>
+          <ToastContainer />
+          <Fragment>
+            <Switch>
+              <Route path="/" exact component={HomeComponent} />
+              <Route path="/signup" exact component={SignupComponent} />
+              <Route path="/login" exact component={LoginComponent} />
+              <Route path="*" component={PageNotFound} />
+            </Switch>
+          </Fragment>
+        </Router>
       </Fragment>
     );
   }

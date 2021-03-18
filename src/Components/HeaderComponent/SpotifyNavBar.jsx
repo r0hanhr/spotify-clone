@@ -2,6 +2,8 @@ import React, { Fragment } from 'react';
 import SpotifyLogo from './LogoComponent/SpotifyLogo';
 import SpotifyMenuComponent from './MenuComponent/SpotifyMenuComponent';
 import "./SpotifyNavBar.css";
+import { Link } from "react-router-dom";
+
 
 const SpotifyNavBar = () => {
     return (
@@ -9,12 +11,12 @@ const SpotifyNavBar = () => {
             <section id="spotifyNavBarBlock">
                 <article>
                     <div className="logoBlock">
-                        <a href="#">
-                            <SpotifyLogo/>
-                        </a>
+                        <Link to="/">
+                            <SpotifyLogo />
+                        </Link>
                     </div>
                     <div className="menuBlock">
-                            <SpotifyMenuComponent/>
+                        <SpotifyMenuComponent />
                     </div>
                 </article>
             </section>
