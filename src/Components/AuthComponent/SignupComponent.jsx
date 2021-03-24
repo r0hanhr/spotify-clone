@@ -27,15 +27,17 @@ class SignupComponent extends Component {
             let message = `Verification mail has been sent to ${email} please confirm it and login`;
             toast.success(message);
             //gravatar
-            userData.user.updateProfile({
+            await userData.user.updateProfile({
                 displayName: profile,
                 photoURL: `https://www.gravatar.com/avatar/${md5(email)}?d=identicon`
             })
+            console.log(userData);
             //store information to realtime database
-            await firebase.database().ref("/users" + userData.user.uid).set({
-                email: userData.email,
-                photoURL: userData.photoURL,
-                profile: userData.profile
+            await firebase.database().ref().child("users/" + userData.user.uid).set({
+                username: userData.user.displayName,
+                email: userData.user.email,
+                photoURL: userData.user.photoURL,
+                registrationDate: new Date().toLocaleDateString()
             })
         } catch (err) {
             console.log(err);
